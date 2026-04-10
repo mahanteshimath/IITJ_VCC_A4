@@ -536,9 +536,10 @@ h1 {
 
 .pill-button.is-active,
 .segment-button.is-active {
-  color: #fff;
-  border-color: transparent;
-  background: linear-gradient(135deg, var(--berry), var(--coral));
+  color: #2c2207;
+  border-color: color-mix(in srgb, var(--gold) 55%, #8a6b1f 45%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 78%, #ffe8a3 22%), color-mix(in srgb, var(--gold) 62%, #bf8d24 38%));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--gold) 30%, transparent);
 }
 
 .button-cluster.compact .pill-button {
@@ -547,6 +548,11 @@ h1 {
 
 #rings .panel-header h3 {
   color: color-mix(in srgb, var(--ring-hypervisor) 52%, var(--ink) 48%);
+}
+
+#distributed .panel-header h3,
+#cap .panel-header h3 {
+  color: color-mix(in srgb, var(--gold) 62%, var(--ink) 38%);
 }
 
 #rings .button-cluster .pill-button {
@@ -673,8 +679,8 @@ h1 {
 
 .node-card.is-active,
 .cap-node.is-active {
-  border-color: rgba(29, 122, 114, 0.42);
-  box-shadow: 0 16px 34px rgba(29, 122, 114, 0.15);
+  border-color: color-mix(in srgb, var(--gold) 55%, #8a6b1f 45%);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--gold) 32%, transparent);
 }
 
 .event-log {
