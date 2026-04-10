@@ -554,8 +554,10 @@ h1 {
 }
 
 #rings .button-cluster .pill-button.is-active {
-  background: linear-gradient(135deg, var(--ring-hypervisor), var(--ring-root));
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--ring-hypervisor) 35%, transparent);
+  color: #2c2207;
+  border-color: color-mix(in srgb, var(--gold) 55%, #8a6b1f 45%);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 78%, #ffe8a3 22%), color-mix(in srgb, var(--gold) 62%, #bf8d24 38%));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--gold) 38%, transparent);
 }
 
 .ring-map {
@@ -602,12 +604,12 @@ h1 {
 
 .ring-band.is-active {
   transform: translateX(6px);
-  border-color: color-mix(in srgb, var(--ring-hypervisor) 44%, transparent);
-  box-shadow: 0 14px 30px color-mix(in srgb, var(--ring-hypervisor) 26%, transparent);
+  border-color: color-mix(in srgb, var(--gold) 60%, #8f6d20 40%);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--gold) 30%, transparent);
 }
 
 .ring-band.is-path {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--ring-user) 22%, transparent), color-mix(in srgb, var(--ring-hypervisor) 16%, transparent), color-mix(in srgb, var(--surface) 88%, #ffffff 12%));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--gold) 28%, transparent), color-mix(in srgb, var(--gold) 14%, #fff6d3 86%), color-mix(in srgb, var(--surface) 88%, #ffffff 12%));
 }
 
 .detail-grid {
