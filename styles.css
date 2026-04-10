@@ -10,6 +10,11 @@
   --coral: #d36243;
   --berry: #8b3652;
   --gold: #c79b31;
+  --ring-root: #7f3f98;
+  --ring-kernel: #d95f5f;
+  --ring-driver: #f0a74a;
+  --ring-hypervisor: #3f86d8;
+  --ring-user: #1f9d77;
   --shadow: 0 20px 50px rgba(64, 42, 18, 0.12);
   --bg-gradient:
     radial-gradient(circle at top left, rgba(211, 98, 67, 0.14), transparent 26%),
@@ -32,6 +37,11 @@
   --coral: #f28c6e;
   --berry: #f4a9bf;
   --gold: #f0c563;
+  --ring-root: #c88be4;
+  --ring-kernel: #ff8f8f;
+  --ring-driver: #ffcf7b;
+  --ring-hypervisor: #7ab3ff;
+  --ring-user: #5de3b8;
   --shadow: 0 20px 52px rgba(1, 4, 10, 0.5);
   --bg-gradient:
     radial-gradient(circle at top left, rgba(242, 140, 110, 0.15), transparent 28%),
@@ -535,6 +545,19 @@ h1 {
   padding-inline: 12px;
 }
 
+#rings .panel-header h3 {
+  color: color-mix(in srgb, var(--ring-hypervisor) 52%, var(--ink) 48%);
+}
+
+#rings .button-cluster .pill-button {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-soft) 90%, #ffffff 10%), color-mix(in srgb, var(--surface) 92%, transparent));
+}
+
+#rings .button-cluster .pill-button.is-active {
+  background: linear-gradient(135deg, var(--ring-hypervisor), var(--ring-root));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--ring-hypervisor) 35%, transparent);
+}
+
 .ring-map {
   display: grid;
   gap: 10px;
@@ -557,14 +580,34 @@ h1 {
   font-size: 1.08rem;
 }
 
+.ring-band[data-ring="ring--1"] {
+  border-left: 6px solid color-mix(in srgb, var(--ring-root) 70%, transparent);
+}
+
+.ring-band[data-ring="ring-0"] {
+  border-left: 6px solid color-mix(in srgb, var(--ring-kernel) 70%, transparent);
+}
+
+.ring-band[data-ring="ring-1"] {
+  border-left: 6px solid color-mix(in srgb, var(--ring-driver) 72%, transparent);
+}
+
+.ring-band[data-ring="ring-2"] {
+  border-left: 6px solid color-mix(in srgb, var(--ring-hypervisor) 72%, transparent);
+}
+
+.ring-band[data-ring="ring-3"] {
+  border-left: 6px solid color-mix(in srgb, var(--ring-user) 72%, transparent);
+}
+
 .ring-band.is-active {
   transform: translateX(6px);
-  border-color: rgba(29, 122, 114, 0.4);
-  box-shadow: 0 14px 30px rgba(29, 122, 114, 0.14);
+  border-color: color-mix(in srgb, var(--ring-hypervisor) 44%, transparent);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--ring-hypervisor) 26%, transparent);
 }
 
 .ring-band.is-path {
-  background: linear-gradient(90deg, color-mix(in srgb, var(--teal) 18%, transparent), color-mix(in srgb, var(--surface) 88%, #ffffff 12%));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--ring-user) 22%, transparent), color-mix(in srgb, var(--ring-hypervisor) 16%, transparent), color-mix(in srgb, var(--surface) 88%, #ffffff 12%));
 }
 
 .detail-grid {
