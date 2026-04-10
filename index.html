@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Systems Learning Lab</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero" id="top">
+      <nav class="topbar">
+        <a class="brand" href="#top">Cloud Systems Learning Lab</a>
+        <div class="nav-links">
+          <a href="#rings">Privilege Rings</a>
+          <a href="#distributed">Distributed Management</a>
+          <a href="#cap">CAP Theorem</a>
+        </div>
+      </nav>
+
+      <div class="hero-grid">
+        <section class="hero-copy">
+          <h1>Understand cloud systems by touching the trade-offs yourself.</h1>
+          <p class="hero-text">
+            This site turns the source notes into three simulation labs: hardware privilege and virtualization,
+            distributed coordination, and CAP-era consistency decisions. Instead of memorizing definitions,
+            you can trigger failures, move across control layers, and watch the system react.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#rings">Start the labs</a>
+            <a class="button button-secondary" href="#missions">Try challenge mode</a>
+          </div>
+          <div class="hero-metrics">
+            <article class="metric-card">
+              <strong>3</strong>
+              <span>simulation labs</span>
+            </article>
+            <article class="metric-card">
+              <strong>3</strong>
+              <span>interactive scenarios</span>
+            </article>
+            <article class="metric-card">
+              <strong>1</strong>
+              <span>single-file open-and-learn experience</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="hero-panel">
+          <div class="hero-panel-header">
+            <span class="status-dot"></span>
+            <p>Learning cockpit</p>
+          </div>
+          <div class="hero-stack">
+            <article class="topic-teaser">
+              <img src="cloud/images/cpu_rings.png" alt="Privilege rings illustration">
+              <div>
+                <h2>Privilege Rings and Control</h2>
+                <p>See which operations stay in user land, which jump into the kernel, and where the hypervisor intercepts.</p>
+              </div>
+            </article>
+            <article class="topic-teaser">
+              <img src="cloud/images/distributed_architecture.png" alt="Distributed architecture illustration">
+              <div>
+                <h2>Distributed Management Architecture</h2>
+                <p>Switch between client-server and hybrid peer networks while managing leaders, IP drift, and notifications.</p>
+              </div>
+            </article>
+            <article class="topic-teaser">
+              <img src="cloud/images/cap_theorem.png" alt="CAP theorem illustration">
+              <div>
+                <h2>CAP and Consistency Models</h2>
+                <p>Force a partition, choose CP or AP behavior, and decide how much freshness your app really needs.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <section class="overview">
+        <article class="overview-card">
+          <p class="card-tag">Module 09</p>
+          <h2>Privilege is the path to control</h2>
+          <p>User applications can access services, but direct hardware control lives in more privileged layers. Virtualization adds another interception boundary.</p>
+          <a href="#rings">Open the privilege lab</a>
+        </article>
+        <article class="overview-card">
+          <p class="card-tag">Module 13</p>
+          <h2>No real system is purely centralized or purely peer-to-peer</h2>
+          <p>Modern systems mix leaders, replicas, trackers, DNS, load balancers, and periodic pull-based refreshes to stay coordinated.</p>
+          <a href="#distributed">Explore the coordination lab</a>
+        </article>
+        <article class="overview-card">
+          <p class="card-tag">Module 15</p>
+          <h2>Partitions turn architecture into a choice</h2>
+          <p>When the network splits, you either reject work to stay consistent or continue serving stale or diverged data and reconcile later.</p>
+          <a href="#cap">Run the CAP lab</a>
+        </article>
+      </section>
+
+      <section class="lab-section" id="rings">
+        <div class="section-heading">
+          <p class="eyebrow">Lab 1</p>
+          <h2>Processor Privilege Rings and Control</h2>
+          <p>Move actions through the platform stack and compare containers, full virtualization, and hardware-assisted virtualization.</p>
+        </div>
+
+        <div class="lab-grid">
+          <article class="lab-copy">
+            <div class="callout">
+              <h3>What this lab teaches</h3>
+              <ul class="fact-list">
+                <li>Why ordinary apps stay in Ring 3 and need system calls for protected work.</li>
+                <li>Why drivers and kernel-level code get direct control, not just access.</li>
+                <li>How hypervisors gain extra power and how VT-x or AMD-V introduces a root-mode interception path.</li>
+                <li>Why deleting a file removes metadata first and physical overwrite later.</li>
+              </ul>
+            </div>
+
+            <div class="insight-strip">
+              <p class="insight-title">Mental model</p>
+              <p>
+                Treat the machine like a building with layers of keys. Apps can request a room service. Drivers and kernels can open locked utility closets.
+                Hypervisors can stand above guest operating systems and intercept critical actions before they touch hardware.
+              </p>
+            </div>
+
+            <div class="source-visual">
+              <img src="cloud/images/cpu_rings.png" alt="CPU privilege rings diagram">
+            </div>
+          </article>
+
+          <article class="lab-panel">
+            <div class="panel-header">
+              <h3>Privilege Rings Simulator</h3>
+              <p>Pick a virtualization mode, then click an action to see where the CPU sends it.</p>
+            </div>
+
+            <div class="control-stack">
+              <label class="select-field">
+                <span>Virtualization mode</span>
+                <select id="virtualization-mode">
+                  <option value="container">OS-level containers</option>
+                  <option value="full">Full virtualization</option>
+                  <option value="assisted">Hardware-assisted virtualization</option>
+                </select>
+              </label>
+
+              <div class="button-cluster" id="ring-actions">
+                <button class="pill-button is-active" data-action="camera-stream" type="button">Read camera feed</button>
+                <button class="pill-button" data-action="driver-register" type="button">Write device register</button>
+                <button class="pill-button" data-action="allocate-vm" type="button">Allocate 2 GB to VM</button>
+                <button class="pill-button" data-action="guest-io" type="button">Guest OS executes privileged I/O</button>
+                <button class="pill-button" data-action="post-check" type="button">Run POST before boot</button>
+                <button class="pill-button" data-action="delete-file" type="button">Delete a file</button>
+              </div>
+            </div>
+
+            <div class="ring-map" id="ring-map">
+              <article class="ring-band" data-ring="ring--1">
+                <div>
+                  <p class="ring-label">Ring -1</p>
+                  <h4>Firmware / VMX root</h4>
+                </div>
+                <span>Pre-boot checks and hardware-assisted traps</span>
+              </article>
+              <article class="ring-band" data-ring="ring-0">
+                <div>
+                  <p class="ring-label">Ring 0</p>
+                  <h4>Kernel core</h4>
+                </div>
+                <span>Memory management, interrupts, protected state</span>
+              </article>
+              <article class="ring-band" data-ring="ring-1">
+                <div>
+                  <p class="ring-label">Ring 1</p>
+                  <h4>Device drivers</h4>
+                </div>
+                <span>Direct hardware register and device control</span>
+              </article>
+              <article class="ring-band" data-ring="ring-2">
+                <div>
+                  <p class="ring-label">Ring 2</p>
+                  <h4>Hypervisor services</h4>
+                </div>
+                <span>VM allocation, mediation, and isolation logic</span>
+              </article>
+              <article class="ring-band" data-ring="ring-3">
+                <div>
+                  <p class="ring-label">Ring 3</p>
+                  <h4>User applications</h4>
+                </div>
+                <span>Safe requests through operating-system APIs</span>
+              </article>
+            </div>
+
+            <div class="detail-grid">
+              <article class="detail-card">
+                <p class="detail-label">Privilege needed</p>
+                <h4 id="ring-target">Ring 3</h4>
+                <p id="ring-outcome">A user application can ask the OS for camera frames, but the OS and driver still control the hardware.</p>
+              </article>
+              <article class="detail-card">
+                <p class="detail-label">Execution flow</p>
+                <p id="ring-flow">Application -> system call -> kernel -> camera driver -> hardware</p>
+              </article>
+              <article class="detail-card detail-card-wide">
+                <p class="detail-label">Mode insight</p>
+                <p id="ring-mode-insight">Containers share the host kernel, so isolation is fast but less absolute than a full guest operating system.</p>
+              </article>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lab-section" id="distributed">
+        <div class="section-heading">
+          <p class="eyebrow">Lab 2</p>
+          <h2>Distributed Management Architecture</h2>
+          <p>Toggle coordination styles, trigger network changes, and watch how updates propagate through leaders, trackers, and clients.</p>
+        </div>
+
+        <div class="lab-grid">
+          <article class="lab-copy">
+            <div class="callout">
+              <h3>What this lab teaches</h3>
+              <ul class="fact-list">
+                <li>Client-server is simple to coordinate, but leaders and primaries become failure pressure points.</li>
+                <li>Peer-to-peer systems still need central discovery or bootstrap helpers in practice.</li>
+                <li>Push delivery only works after a client first registers itself through an earlier pull-like contact.</li>
+                <li>Logical clocks preserve event order even when physical clocks disagree.</li>
+              </ul>
+            </div>
+
+            <div class="insight-strip">
+              <p class="insight-title">Mental model</p>
+              <p>
+                Picture a restaurant chain. A leader kitchen coordinates recipes and stock, clients place orders, replicas cover failures,
+                and even the "decentralized" version still relies on a shared member list to find peers.
+              </p>
+            </div>
+
+            <div class="source-visual">
+              <img src="cloud/images/distributed_architecture.png" alt="Distributed management architecture diagram">
+            </div>
+          </article>
+
+          <article class="lab-panel">
+            <div class="panel-header">
+              <h3>Coordination Playground</h3>
+              <p>Choose an architecture, then fire events and read the system log like an operator.</p>
+            </div>
+
+            <div class="control-stack">
+              <div class="segmented">
+                <button class="segment-button is-active" data-architecture="client-server" type="button">Client-server</button>
+                <button class="segment-button" data-architecture="hybrid" type="button">Hybrid P2P</button>
+              </div>
+
+              <div class="segmented">
+                <button class="segment-button is-active" data-notification="pull" type="button">Pull updates</button>
+                <button class="segment-button" data-notification="push" type="button">Push updates</button>
+              </div>
+
+              <div class="button-cluster compact">
+                <button class="pill-button" data-distributed-event="register" type="button">Register client</button>
+                <button class="pill-button" data-distributed-event="send-update" type="button">Send update</button>
+                <button class="pill-button" data-distributed-event="roam-ip" type="button">Client IP changes</button>
+                <button class="pill-button" data-distributed-event="server-ip" type="button">Server IP changes</button>
+                <button class="pill-button" data-distributed-event="leader-fail" type="button">Leader fails</button>
+                <button class="pill-button" data-distributed-event="recover" type="button">Recover cluster</button>
+              </div>
+            </div>
+
+            <div class="network-stage">
+              <article class="node-card node-client" data-node="client">
+                <p class="node-title">Client</p>
+                <strong id="client-ip">10.0.14.8</strong>
+                <span>Needs discovery and a fresh route</span>
+              </article>
+              <article class="node-card node-edge" data-node="edge">
+                <p class="node-title" id="edge-title">Load balancer</p>
+                <strong id="edge-endpoint">api.learncloud.dev</strong>
+                <span id="edge-caption">Stable entry point hides server IP changes</span>
+              </article>
+              <article class="node-card node-leader" data-node="leader">
+                <p class="node-title" id="leader-title">Leader</p>
+                <strong id="leader-status">Healthy</strong>
+                <span id="leader-caption">Coordinates writes and replicas</span>
+              </article>
+              <article class="node-card node-replica" data-node="replica-a">
+                <p class="node-title">Replica A</p>
+                <strong>Synced</strong>
+                <span>Backup capacity for failover</span>
+              </article>
+              <article class="node-card node-replica" data-node="replica-b">
+                <p class="node-title">Replica B / Peer</p>
+                <strong id="peer-status">Available</strong>
+                <span id="peer-caption">Acts as a replica or peer depending on mode</span>
+              </article>
+            </div>
+
+            <div class="detail-grid">
+              <article class="detail-card">
+                <p class="detail-label">Logical clock</p>
+                <h4 id="logical-clock">0</h4>
+                <p>Lamport-style event ordering for this mini cluster</p>
+              </article>
+              <article class="detail-card">
+                <p class="detail-label">Current lesson</p>
+                <p id="distributed-insight">Every push begins with earlier registration, which is a pull-like step.</p>
+              </article>
+              <article class="detail-card detail-card-wide">
+                <p class="detail-label">Operator log</p>
+                <ul class="event-log" id="distributed-log"></ul>
+              </article>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="lab-section" id="cap">
+        <div class="section-heading">
+          <p class="eyebrow">Lab 3</p>
+          <h2>CAP Theorem and Consistency Models</h2>
+          <p>Split the network, choose CP or AP behavior, and compare freshness guarantees across common consistency models.</p>
+        </div>
+
+        <div class="lab-grid">
+          <article class="lab-copy">
+            <div class="callout">
+              <h3>What this lab teaches</h3>
+              <ul class="fact-list">
+                <li>Partition tolerance is not optional in cloud systems, because real networks eventually fail.</li>
+                <li>CP systems preserve a single truth by rejecting some requests during a split.</li>
+                <li>AP systems stay responsive during a split but may return stale or diverged data until reconciliation.</li>
+                <li>Strong, eventual, causal, monotonic, and read-your-writes guarantees serve different product needs.</li>
+              </ul>
+            </div>
+
+            <div class="insight-strip">
+              <p class="insight-title">Mental model</p>
+              <p>
+                A partition is like cutting the hallway between offices. Teams on both sides can keep working, but now you have to decide whether they pause for
+                agreement or continue with possibly conflicting versions.
+              </p>
+            </div>
+
+            <div class="source-visual">
+              <img src="cloud/images/cap_theorem.png" alt="CAP theorem diagram">
+            </div>
+          </article>
+
+          <article class="lab-panel">
+            <div class="panel-header">
+              <h3>Partition Simulator</h3>
+              <p>Write values from either side of the split and inspect what each node is allowed to return.</p>
+            </div>
+
+            <div class="control-stack">
+              <div class="segmented">
+                <button class="segment-button is-active" data-policy="cp" type="button">Choose CP</button>
+                <button class="segment-button" data-policy="ap" type="button">Choose AP</button>
+              </div>
+
+              <div class="button-cluster compact" id="consistency-models">
+                <button class="pill-button is-active" data-model="strong" type="button">Strong</button>
+                <button class="pill-button" data-model="eventual" type="button">Eventual</button>
+                <button class="pill-button" data-model="causal" type="button">Causal</button>
+                <button class="pill-button" data-model="read-your-writes" type="button">Read your writes</button>
+                <button class="pill-button" data-model="monotonic" type="button">Monotonic reads</button>
+              </div>
+
+              <div class="write-controls">
+                <label class="select-field">
+                  <span>Write value</span>
+                  <input id="cap-write-value" type="number" min="0" max="99" value="6">
+                </label>
+                <div class="button-cluster compact">
+                  <button class="pill-button" id="toggle-partition" type="button">Create partition</button>
+                  <button class="pill-button" id="write-left" type="button">Write on A/C side</button>
+                  <button class="pill-button" id="write-right" type="button">Write on B side</button>
+                  <button class="pill-button" id="heal-partition" type="button">Heal and reconcile</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="cap-stage" id="cap-stage">
+              <article class="cap-node" data-cap-node="A">
+                <p class="node-title">Node A</p>
+                <strong id="value-A">5</strong>
+                <span id="version-A">v0</span>
+              </article>
+              <article class="cap-node" data-cap-node="B">
+                <p class="node-title">Node B</p>
+                <strong id="value-B">5</strong>
+                <span id="version-B">v0</span>
+              </article>
+              <article class="cap-node" data-cap-node="C">
+                <p class="node-title">Node C</p>
+                <strong id="value-C">5</strong>
+                <span id="version-C">v0</span>
+              </article>
+              <div class="partition-line" id="partition-line"></div>
+            </div>
+
+            <div class="detail-grid">
+              <article class="detail-card">
+                <p class="detail-label">Partition state</p>
+                <h4 id="partition-state">Network partition active</h4>
+                <p id="cap-policy-summary">CP will reject work on the isolated side to avoid two truths.</p>
+              </article>
+              <article class="detail-card">
+                <p class="detail-label">Selected consistency model</p>
+                <p id="consistency-summary">Strong consistency always serves the latest committed value or returns an error.</p>
+              </article>
+              <article class="detail-card detail-card-wide">
+                <p class="detail-label">Read results and reconciliation log</p>
+                <ul class="event-log" id="cap-log"></ul>
+              </article>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="mission-section" id="missions">
+        <div class="section-heading">
+          <p class="eyebrow">Challenge Mode</p>
+          <h2>Three fast missions to lock in the intuition</h2>
+          <p>Use the labs above, then check whether your reasoning matches the architectural trade-off.</p>
+        </div>
+
+        <div class="mission-grid">
+          <article class="mission-card">
+            <p class="card-tag">Mission 1</p>
+            <h3>Why can Zoom use your camera but not rewrite the camera firmware?</h3>
+            <p>Run the privilege lab with the camera and device-register actions. Watch the difference between access through an API and direct control through a driver.</p>
+          </article>
+          <article class="mission-card">
+            <p class="card-tag">Mission 2</p>
+            <h3>Why does a push notification stop working right after a phone changes networks?</h3>
+            <p>Switch the distributed lab to push, trigger a client IP change, and notice how the server needs a fresh registration before it can target the device again.</p>
+          </article>
+          <article class="mission-card">
+            <p class="card-tag">Mission 3</p>
+            <h3>Why might a social feed keep serving data during an outage while a banking app pauses?</h3>
+            <p>Use the CAP lab to compare AP plus eventual consistency with CP plus strong consistency under the same partition event.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
