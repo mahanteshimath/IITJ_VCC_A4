@@ -125,7 +125,7 @@ function setTheme(theme) {
   }
 
   const darkMode = theme === "dark";
-  themeToggle.textContent = darkMode ? "Light mode" : "Dark mode";
+  themeToggle.title = darkMode ? "Switch to light theme" : "Switch to dark theme";
   themeToggle.setAttribute("aria-pressed", darkMode ? "true" : "false");
   themeToggle.setAttribute("aria-label", darkMode ? "Switch to light theme" : "Switch to dark theme");
 }

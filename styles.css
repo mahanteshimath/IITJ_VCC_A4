@@ -100,17 +100,20 @@ h4 {
 }
 
 .theme-toggle {
-  min-height: 40px;
-  padding: 0 14px;
+  width: 78px;
+  min-height: 42px;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface-soft);
   color: var(--ink);
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
   cursor: pointer;
-  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+  overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 220ms ease;
 }
 
 .theme-toggle:hover {
@@ -120,6 +123,84 @@ h4 {
 .theme-toggle:focus-visible {
   outline: 2px solid color-mix(in srgb, var(--teal) 70%, white 30%);
   outline-offset: 2px;
+}
+
+.theme-toggle-track {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  border-radius: 999px;
+  background: linear-gradient(140deg, #ffd584, #ffbe57);
+  transition: background 220ms ease;
+}
+
+.theme-toggle-sun {
+  position: absolute;
+  top: 7px;
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff5cd;
+  box-shadow: 0 0 0 6px rgba(255, 245, 205, 0.25);
+  transition: transform 300ms ease, opacity 220ms ease;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fdfdff;
+  box-shadow: 0 6px 14px rgba(7, 10, 22, 0.24);
+  display: grid;
+  place-items: center;
+  transform: translateX(0);
+  transition: transform 320ms cubic-bezier(0.25, 0.9, 0.35, 1.1), background 220ms ease;
+}
+
+.theme-toggle-moon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ecf2ff;
+  box-shadow: -4px -1px 0 0 #c4d1f0 inset;
+  transform: scale(0.55) rotate(-20deg);
+  opacity: 0;
+  transition: transform 280ms ease, opacity 220ms ease;
+}
+
+.theme-toggle-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-track {
+  background: linear-gradient(145deg, #223450, #111c30);
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
+  transform: translateX(48px);
+  background: #dde7ff;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-sun {
+  transform: scale(0.5) rotate(30deg);
+  opacity: 0.25;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-moon {
+  transform: scale(1) rotate(0deg);
+  opacity: 1;
 }
 
 .brand {
