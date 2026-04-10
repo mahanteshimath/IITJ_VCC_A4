@@ -114,6 +114,27 @@ const consistencySummaries = {
 
 const distributedLog = document.getElementById("distributed-log");
 const capLog = document.getElementById("cap-log");
+const themeToggle = document.getElementById("theme-toggle");
+
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+
+  if (!themeToggle) {
+    return;
+  }
+
+  const darkMode = theme === "dark";
+  themeToggle.textContent = darkMode ? "Light mode" : "Dark mode";
+  themeToggle.setAttribute("aria-pressed", darkMode ? "true" : "false");
+  themeToggle.setAttribute("aria-label", darkMode ? "Switch to light theme" : "Switch to dark theme");
+}
+
+function initializeTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  const preferredTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  setTheme(savedTheme || preferredTheme);
+}
 
 function setActiveButton(selector, valueKey, value) {
   document.querySelectorAll(selector).forEach((button) => {
@@ -455,6 +476,14 @@ document.getElementById("write-left").addEventListener("click", () => writeCap("
 document.getElementById("write-right").addEventListener("click", () => writeCap("right"));
 document.getElementById("heal-partition").addEventListener("click", healPartition);
 
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const nextTheme = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+  });
+}
+
+initializeTheme();
 renderRingLab();
 renderDistributedLab();
 renderCapLab();
