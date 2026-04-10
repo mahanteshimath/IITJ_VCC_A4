@@ -142,6 +142,12 @@ function setActiveButton(selector, valueKey, value) {
   });
 }
 
+function setActiveInGroup(selector, activeButton) {
+  document.querySelectorAll(selector).forEach((button) => {
+    button.classList.toggle("is-active", button === activeButton);
+  });
+}
+
 function renderRingLab() {
   const action = ringActions[ringState.action];
 
@@ -451,6 +457,7 @@ document.querySelectorAll("[data-notification]").forEach((button) => {
 
 document.querySelectorAll("[data-distributed-event]").forEach((button) => {
   button.addEventListener("click", () => {
+    setActiveInGroup("[data-distributed-event]", button);
     handleDistributedEvent(button.dataset.distributedEvent);
   });
 });
@@ -471,10 +478,22 @@ document.querySelectorAll("#consistency-models [data-model]").forEach((button) =
   });
 });
 
-document.getElementById("toggle-partition").addEventListener("click", togglePartition);
-document.getElementById("write-left").addEventListener("click", () => writeCap("left"));
-document.getElementById("write-right").addEventListener("click", () => writeCap("right"));
-document.getElementById("heal-partition").addEventListener("click", healPartition);
+document.getElementById("toggle-partition").addEventListener("click", (event) => {
+  setActiveInGroup(".write-controls .button-cluster .pill-button", event.currentTarget);
+  togglePartition();
+});
+document.getElementById("write-left").addEventListener("click", (event) => {
+  setActiveInGroup(".write-controls .button-cluster .pill-button", event.currentTarget);
+  writeCap("left");
+});
+document.getElementById("write-right").addEventListener("click", (event) => {
+  setActiveInGroup(".write-controls .button-cluster .pill-button", event.currentTarget);
+  writeCap("right");
+});
+document.getElementById("heal-partition").addEventListener("click", (event) => {
+  setActiveInGroup(".write-controls .button-cluster .pill-button", event.currentTarget);
+  healPartition();
+});
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
